@@ -114,6 +114,7 @@ function InlineTextFieldsView({
   acceptable_color,
   false_color,
   empty_color,
+  freezeInputs,
 }) {
   // --- Theme Setup ---
   // Directly use Streamlit's theme properties where available, with sensible fallbacks.
@@ -126,13 +127,13 @@ function InlineTextFieldsView({
     streamlitTheme?.borderColor || shadeColor(stSecondaryBgColor, -20); // Use Streamlit's borderColor or derive
   // Define colors for validation states.
   // Users can override these by passing, e.g., theme.customComponent.inlineTextFields.fieldBorderColor
-  
+
   const theme = {
     fontFamily: stFont,
     textColor: stTextColor,
     textSegmentColor: stTextColor, // Text segments use the main text color
 
-    fieldBgColor:  stSecondaryBgColor,
+    fieldBgColor: stSecondaryBgColor,
 
     fieldBorderColor: stBorderColor,
     fieldFocusBorderColor: stPrimaryColor,
@@ -159,9 +160,12 @@ function InlineTextFieldsView({
 
   const [userInputs, setUserInputs] = useState(initializeInputs());
 
-  useEffect(() => {
-    setUserInputs(initializeInputs());
-  }, [initializeInputs]);
+
+   useEffect(() => {
+   if (!freezeInputs) {
+     setUserInputs(initializeInputs());
+   }
+ }, [initializeInputs, freezeInputs]);
 
   // --- State for Client-Side Validation Visuals ---
   const [validationDisplayStates, setValidationDisplayStates] = useState([]);
@@ -331,13 +335,21 @@ function InlineTextFieldsView({
                   <input
                     key={`field-${sentenceIndex}-${currentFieldInputIndex}`}
                     type="text"
-                    value={inputValue}
-                    placeholder={
-                      renderResultsMode
-                        ? ""
-                        : solutionForSizing.replace(/./g, "_")
+                    // when frozen, show either the user’s last value or the solution‐sized underscores as the “value”
+                    value={
+                      freezeInputs
+                        ? inputValue || solutionForSizing.replace(/./g, "_")
+                        : inputValue
                     }
+                    // only show placeholder when not frozen
+                    placeholder={
+                      !freezeInputs && !renderResultsMode
+                        ? solutionForSizing.replace(/./g, "_")
+                        : ""
+                    }
+                    readOnly={freezeInputs}
                     onChange={(e) =>
+                      !freezeInputs &&
                       handleSingleInputChange(
                         sentenceIndex,
                         currentFieldInputIndex,

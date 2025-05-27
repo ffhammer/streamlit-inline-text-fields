@@ -151,3 +151,53 @@ results_render = inline_text_fields(
 st.write("Returned Validation (Python-side):")
 st.json(results_render)
 st.markdown("---")
+
+# --- 6. Freeze Inputs ---
+st.header("6. Freeze Inputs")
+st.write("`freeze = True`. Fields should be non-editable, preserving their last state.")
+
+# Use a session state variable to toggle freeze
+if "freeze_example_inputs" not in st.session_state:
+    st.session_state.freeze_example_inputs = [
+        ["initial"],  # Sentence 1, Field 1
+        ["content", "here"],  # Sentence 2, Field 1, Field 2
+    ]
+if "freeze_toggle_state" not in st.session_state:
+    st.session_state.freeze_toggle_state = False
+
+sentences_freeze = [
+    "This field should be {frozen}.",
+    "And {this} one {too}.",
+]
+st.write("Input Sentences:")
+st.json(sentences_freeze)
+
+# Button to toggle freeze state
+if st.button("Toggle Freeze State"):
+    st.session_state.freeze_toggle_state = not st.session_state.freeze_toggle_state
+
+st.write(f"Currently Frozen: {st.session_state.freeze_toggle_state}")
+
+# To make this example interactive with freeze, we need to manage the inputs
+# outside the component if we want to "pre-fill" them before freezing.
+# However, the component itself will handle preserving its state when freeze is toggled.
+
+# For a simple demonstration of freeze, we can show it with initial empty or pre-filled values.
+# Let's demonstrate with pre-filled values that get frozen.
+# The component will receive its state from Streamlit's internal state management for the key.
+
+# If we want to simulate pre-filled values that then get frozen,
+# we'd typically have the user input them first, then toggle freeze.
+# The component's `key` ensures state is maintained across reruns.
+
+results_freeze = inline_text_fields(
+    sentences_with_solutions=sentences_freeze,
+    render_results_in_frontend=True,  # So we can see the state
+    freeze=st.session_state.freeze_toggle_state,
+    key="freeze_example_fields",  # Key is important for state preservation
+    color_kwargs=custom_validation_colors,  # Use colors from previous example
+)
+
+st.write("Returned Validation (Python-side):")
+st.json(results_freeze)
+st.markdown("---")

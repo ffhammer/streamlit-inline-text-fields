@@ -8,6 +8,7 @@ function StreamlitInlineTextFieldsWrapper({ args, theme }) {
     render_results_mode: renderResultsMode,
     validation_rules_for_frontend: validationRules,
     color_kwargs : color_kwargs, 
+    freeze_inputs: freezeInputs,
   } = args;
 
     const {
@@ -43,6 +44,7 @@ function StreamlitInlineTextFieldsWrapper({ args, theme }) {
         acceptable_color={acceptableColor}
         false_color={falseColor}
         empty_color={emptyColor}
+        freezeInputs={freezeInputs}
       />
     );
   }

@@ -223,6 +223,7 @@ def inline_text_fields(
     ignore_accents: bool = False,
     accepted_levenshtein_distance: int = 0,
     render_results_in_frontend: bool = False,
+    freeze: bool = False,
     key: Optional[str] = None,
     color_kwargs: dict[ValidationStatus, str] = {},
 ) -> FullValidationOutput:
@@ -259,6 +260,12 @@ def inline_text_fields(
         If True, the frontend visually indicates correctness of current inputs.
         Python always performs final validation.
         Default is False.
+
+    freeze : bool, optional
+        If True, all input fields will be disabled (non-editable) in the frontend.
+        This is useful for displaying results after an interaction session.
+        Default is False.
+
 
     key : str, optional
         Unique key for the component instance.
@@ -322,6 +329,7 @@ def inline_text_fields(
             "accepted_levenshtein_distance": accepted_levenshtein_distance,
         },
         "color_kwargs": color_kwargs,
+        "freeze_inputs": freeze,
     }
 
     # 5. Call the frontend component
