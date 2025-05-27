@@ -55,7 +55,8 @@ results_lev = inline_text_fields(
     sentences_with_solutions=sentences_lev,
     accepted_levenshtein_distance=1,
     render_results_in_frontend=True,
-    color_kwargs=custom_colors
+    color_kwargs=custom_colors,
+    freeze=True  # Example usage of freeze option
 )
 st.write(results_lev)
 ```
@@ -71,6 +72,7 @@ def inline_text_fields(
     ignore_accents: bool = False,
     accepted_levenshtein_distance: int = 0,
     render_results_in_frontend: bool = False,
+    freeze: bool = False,
     key: Optional[str] = None,
     color_kwargs: Dict[ValidationStatus, str] = {},
 ) -> List[List[Tuple[str, ValidationStatus]]]:
@@ -88,6 +90,8 @@ def inline_text_fields(
   Maximum Levenshtein distance for an answer to be "acceptable".
 - `render_results_in_frontend: bool`, optional (default: `False`)  
   If True, frontend provides immediate visual feedback on input correctness.
+- `freeze: bool`, optional (default: `False`)  
+  If True, all input fields will be disabled (non-editable) in the frontend. Useful for displaying results after an interaction session.
 - `key: str`, optional  
   Unique Streamlit key for the component.
 - `color_kwargs: Dict[ValidationStatus, str]`, optional  
