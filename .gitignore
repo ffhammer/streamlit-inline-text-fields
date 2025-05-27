@@ -1,0 +1,82 @@
+pyproject.toml
+uv.lock
+.python-version
+repocontext.sh
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+*.pyd
+*.Python
+*.tar.gz
+*.whl
+
+# Virtual environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Node.js / Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json # If you exclusively use yarn.lock or pnpm-lock.yaml
+# yarn.lock        # If you exclusively use package-lock.json or pnpm-lock.yaml
+# pnpm-lock.yaml   # If you exclusively use package-lock.json or yarn.lock
+# vite.config.js.timestamp-* # Vite specific temp files
+
+# Frontend build output (already covered by dist/ but good to be explicit for frontend)
+# If your frontend build output is in fill_in_blanks_component/frontend/dist/
+# and 'dist/' is already in the .gitignore, this is redundant but harmless.
+# fill_in_blanks_component/frontend/dist/
+
+# IDE / Editor specific
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Streamlit specific (usually not needed to ignore, but just in case)
+# .streamlit/config.toml # You might want to commit this if it's project-specific config
+
+# Test outputs
+.pytest_cache/
+coverage/
+htmlcov/
+*.cover
+.tox/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# MyPy cache
+.mypy_cache/
+
+# Ruff cache
+.ruff_cache/
+
+# Pyright cache
+.pyright_cache/
