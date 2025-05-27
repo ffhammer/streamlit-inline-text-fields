@@ -223,8 +223,8 @@ def inline_text_fields(
     ignore_accents: bool = False,
     accepted_levenshtein_distance: int = 0,
     render_results_in_frontend: bool = False,
-    theme: Optional[Dict[str, str]] = None,
     key: Optional[str] = None,
+    color_kwargs: dict[ValidationStatus, str] = {},
 ) -> FullValidationOutput:
     """
     A Streamlit component for creating inline text field exercises.
@@ -258,14 +258,11 @@ def inline_text_fields(
         passed to it. The Python function will still perform its own final validation
         on the inputs returned from the frontend.
         Defaults to False.
-    theme : Optional[Dict[str, str]], optional
-        A dictionary to customize the appearance of the component in the frontend.
-        Example keys: `textColor`, `fieldBgColor`, `fieldBorderColor`, `correctColor`,
-        `acceptableColor`, `falseColor`, `emptyColor`, `fontFamily`.
-        Defaults to None (frontend will use its own defaults).
     key : str, optional
         An optional string to use as the unique key for the component.
         Defaults to None.
+    color_kwargs: dict[str, str], optional
+        Overwrite colors for "perfect", "acceptable", "false", "empty"
 
     Returns:
     --------
@@ -323,9 +320,6 @@ def inline_text_fields(
             "ignore_accents": ignore_accents,
             "accepted_levenshtein_distance": accepted_levenshtein_distance,
         },
-        "theme": (
-            theme if theme is not None else {}
-        ),  # Ensure theme is always a dict for the frontend
     }
 
     # 5. Call the frontend component
