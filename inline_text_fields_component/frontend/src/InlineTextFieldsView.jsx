@@ -115,7 +115,6 @@ function InlineTextFieldsView({
   false_color,
   empty_color,
 }) {
-  console.log("Theme:", streamlitTheme);
   // --- Theme Setup ---
   // Directly use Streamlit's theme properties where available, with sensible fallbacks.
   const stFont = streamlitTheme?.font || "sans-serif";

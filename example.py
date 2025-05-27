@@ -116,66 +116,38 @@ st.markdown("---")
 
 
 # --- 5. Render Results in Frontend ---
-st.header("5. Render Results in Frontend")
+st.header("5. Render Results in Frontend with Custom Colors")
 st.write(
-    "`render_results_in_frontend = True`. Fields should change color as you type (based on client-side check)."
+    "`render_results_in_frontend = True`. Fields should change color as you type, using custom colors."
 )
 sentences_render_results = [
     "The sun is {hot}.",
     "An apple is a {fruit}, not a {vegetable}.",
+    "This is an {example} with Levenshtein.",
 ]
 st.write("Input Sentences:")
 st.json(sentences_render_results)
 
-# For this example, let's also use some validation rules so the frontend has something to work with
+# Define custom colors for border and background
+# Format: {status: (borderColor, backgroundColor)}
+custom_validation_colors = {
+    "perfect": "rgba(144, 238, 144, 0.3)",
+    "acceptable": "rgba(255, 218, 185, 0.4)",
+    "false": "rgba(255, 160, 122, 0.3)",
+    "empty": "rgba(220, 220, 220, 0.2)",
+}
+st.write("Custom Colors Applied:")
+st.json(custom_validation_colors)
+
+
 results_render = inline_text_fields(
     sentences_with_solutions=sentences_render_results,
     render_results_in_frontend=True,
-    ignore_accents=True,  # So frontend can also ignore accents for its display
-    accepted_levenshtein_distance=0,  # Frontend simple check is exact match after normalization
-    key="render_results_fields",
+    ignore_accents=True,
+    accepted_levenshtein_distance=1,  # Allow Levenshtein for "acceptable"
+    key="render_results_fields_custom_colors",
+    color_kwargs=custom_validation_colors,  # Pass the custom colors
 )
 st.write("Returned Validation (Python-side):")
 st.json(results_render)
 st.markdown("---")
-
-
-# --- 6. Custom Theme ---
-st.header("6. Custom Theme")
-st.write("Applying a custom theme to change colors.")
-custom_theme = {
-    "textColor": "navy",
-    "fontFamily": "Georgia, serif",
-    "fieldBgColor": "#e6f7ff",
-    "fieldBorderColor": "lightblue",
-    "fieldFocusBorderColor": "dodgerblue",
-    "correctBg": "lightgreen",
-    "correctBorder": "1px solid green",
-    "falseBg": "lightpink",
-    "falseBorder": "1px solid darkred",
-    "emptyBg": "#f0f0f0",
-    "emptyBorder": "1px solid #c0c0c0",
-    "textSegmentColor": "darkslateblue",
-}
-st.write("Theme being applied:")
-st.json(custom_theme)
-
-sentences_theme = [
-    "This component uses a [custom] theme.",
-    "The fields should look [different].",
-]
-st.write("Input Sentences:")
-st.json(sentences_theme)
-
-results_theme = inline_text_fields(
-    sentences_with_solutions=sentences_theme,
-    delimiter="[]",  # Using a different delimiter for this example
-    render_results_in_frontend=True,  # Good to see theme with validation colors
-    theme=custom_theme,
-    key="theme_fields",
-)
-st.write("Returned Validation (with custom theme):")
-st.json(results_theme)
-st.markdown("---")
-
-st.sidebar.info("Try editing the fields and see the returned JSON update!")

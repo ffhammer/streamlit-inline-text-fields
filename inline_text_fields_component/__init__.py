@@ -227,60 +227,61 @@ def inline_text_fields(
     color_kwargs: dict[ValidationStatus, str] = {},
 ) -> FullValidationOutput:
     """
-    A Streamlit component for creating inline text field exercises.
-    It displays sentences with blanks (defined by delimiters), collects user inputs,
-    and returns these inputs along with their validation status.
+    Streamlit component for inline text field exercises.
 
-    Parameters:
-    -----------
+    Displays sentences with blanks (defined by delimiters), collects user input,
+    and returns both the input and its validation status.
+
+    Parameters
+    ----------
     sentences_with_solutions : List[str]
-        A list of strings, where each string is a sentence template.
-        Fields for user input are indicated by `delimiter`, and the content
-        within the delimiters is considered the "solution" or "target answer".
+        List of sentence templates. Fields for user input are marked by `delimiter`.
+        The content inside the delimiters is the correct answer.
         Example: ["The capital of {France} is Paris.", "An apple is a {fruit}."]
-    delimiter : str, optional
-        A string defining the start and end delimiters for the fields.
-        - If 2 chars (e.g., "{}"): first char is start, second is end (e.g., `{solution}`).
-        - If even len > 2 (e.g., "[[]]"): first half is start, second half is end (e.g., `[[solution]]`).
-        - If 1 char (e.g., "_"): char is used for both start and end (e.g., `_solution_`).
-        Defaults to "{}".
-    ignore_accents : bool, optional
-        If True, accents are ignored during validation (e.g., "é" matches "e").
-        Defaults to False.
-    accepted_levenshtein_distance : int, optional
-        The maximum Levenshtein distance for an answer to be considered "acceptable".
-        A distance of 0 means only exact matches (after normalization) are "perfect".
-        Defaults to 0.
-    render_results_in_frontend : bool, optional
-        If True, this flag instructs the frontend component to visually indicate the
-        correctness of the *current* inputs within the browser, based on the solutions
-        and validation rules (`ignore_accents`, `accepted_levenshtein_distance`)
-        passed to it. The Python function will still perform its own final validation
-        on the inputs returned from the frontend.
-        Defaults to False.
-    key : str, optional
-        An optional string to use as the unique key for the component.
-        Defaults to None.
-    color_kwargs: dict[str, str], optional
-        Overwrite colors for "perfect", "acceptable", "false", "empty"
 
-    Returns:
-    --------
-    FullValidationOutput (List[List[Tuple[str, ValidationStatus]]])
-        A list of lists, mirroring the structure of sentences and their fields.
-        Each inner list corresponds to a sentence.
-        Each tuple within an inner list contains:
-        1. The user's raw input string for a field.
-        2. Its validation status (Literal["perfect", "acceptable", "false", "empty"]).
+    delimiter : str, optional
+        Delimiter for marking input fields.
+        - 2 characters (e.g., "{}"): first is start, second is end (e.g., {answer}).
+        - Even length > 2 (e.g., "[[]]"): split in half for start/end (e.g., [[answer]]).
+        - 1 character (e.g., "_"): used for both start and end (_answer_).
+        Default is "{}".
+
+    ignore_accents : bool, optional
+        If True, ignores accents during validation (e.g., "é" matches "e").
+        Default is False.
+
+    accepted_levenshtein_distance : int, optional
+        Maximum Levenshtein distance for an answer to be "acceptable".
+        0 means only exact matches (after normalization) are "perfect".
+        Default is 0.
+
+    render_results_in_frontend : bool, optional
+        If True, the frontend visually indicates correctness of current inputs.
+        Python always performs final validation.
+        Default is False.
+
+    key : str, optional
+        Unique key for the component instance.
+        Default is None.
+
+    color_kwargs : Dict[ValidationStatus, str], optional
+        Override default colors for validation states.
+        Keys: "perfect", "acceptable", "false", "empty".
+        Values: background color as a string (e.g., "#90EE90").
+        Default is empty dict (frontend uses theme or hardcoded defaults).
+
+    Returns
+    -------
+    FullValidationOutput : List[List[Tuple[str, ValidationStatus]]]
+        Nested list structure matching sentences and their fields.
+        Each tuple: (user input, validation status).
         Example: [[("France", "perfect")], [("friut", "acceptable"), ("red", "false")]]
 
-    Raises:
-    -------
+    Raises
+    ------
     ValueError
         If `accepted_levenshtein_distance` is negative.
-        If the `delimiter` configuration is invalid (e.g., empty or ambiguous).
-    RuntimeError
-        If the 'python-Levenshtein' library is not installed or `Levenshtein.distance` is not available.
+        If `delimiter` is empty or ambiguous.
     """
 
     if accepted_levenshtein_distance < 0:
@@ -320,6 +321,7 @@ def inline_text_fields(
             "ignore_accents": ignore_accents,
             "accepted_levenshtein_distance": accepted_levenshtein_distance,
         },
+        "color_kwargs": color_kwargs,
     }
 
     # 5. Call the frontend component
