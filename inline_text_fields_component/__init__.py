@@ -20,7 +20,7 @@ except ImportError:
 
 # --- Component Declaration ---
 # Set to True when distributing your component
-_RELEASE = False  # <<< YOU WILL CHANGE THIS TO True FOR YOUR BUILD
+_RELEASE = True  # <<< YOU WILL CHANGE THIS TO True FOR YOUR BUILD
 
 # Name of the component directory and the component in React
 COMPONENT_NAME = "inline_text_fields_streamlit"
